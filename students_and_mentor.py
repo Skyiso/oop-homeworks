@@ -90,6 +90,23 @@ class Reviewer(Mentor):
         return res
 
 
+# Нахождение средней оценки по заданному курсу
+def avg_overall_rating(list_of_people, course):
+    sum_rate = 0
+    len_rate = 0
+    for person in list_of_people:
+        if course in person.grades.keys():
+            sum_rate += sum(person.grades[course])
+            len_rate += len(person.grades[course])
+        else:
+            continue
+    if len_rate == 0:
+        return f'Оценок по курсу {course} нет, либо курс не существует.'
+    else:
+        return f'Средний бал за курс {course}: {round(sum_rate / len_rate, 1)}'
+
+
+# Создание экземпляров класса Student
 first_student = Student('Ruoy', 'Eman', 'Male')
 first_student.courses_in_progress += ['Python']
 first_student.finished_courses += ['Git', 'SQL']
@@ -97,21 +114,30 @@ second_student = Student('Jennifer', 'Stevenson', 'Female')
 second_student.courses_in_progress += ['Python', 'Git']
 second_student.finished_courses += ['SQL']
 
+# Создание экземпляров класса Lecturer
 first_lecturer = Lecturer('Anthony', 'Merritt')
 first_lecturer.courses_attached += ['Python']
 second_lecturer = Lecturer('Susan', 'Sherman')
 second_lecturer.courses_attached += ['Git']
 
+# Создание экземпляров класса Reviewer
 first_reviewer = Reviewer('Edmund', 'Porter')
 first_reviewer.courses_attached += ['Python']
+second_reviewer = Reviewer('Abigail', 'Harvey')
+second_reviewer.courses_attached += ['Git']
 
+# Выставление оценок студентам
 first_reviewer.rate_hw(first_student, 'Python', 10)
 first_reviewer.rate_hw(first_student, 'Python', 7)
 first_reviewer.rate_hw(first_student, 'Python', 8)
 first_reviewer.rate_hw(second_student, 'Python', 9)
 first_reviewer.rate_hw(second_student, 'Python', 9)
 first_reviewer.rate_hw(second_student, 'Python', 10)
+second_reviewer.rate_hw(second_student, 'Git', 10)
+second_reviewer.rate_hw(second_student, 'Git', 9)
+second_reviewer.rate_hw(second_student, 'Git', 10)
 
+# Выставление оценок лекторам
 first_student.rate_lec(first_lecturer, 'Python', 10)
 first_student.rate_lec(first_lecturer, 'Python', 10)
 first_student.rate_lec(first_lecturer, 'Python', 10)
@@ -119,10 +145,24 @@ second_student.rate_lec(first_lecturer, 'Python', 9)
 second_student.rate_lec(second_lecturer, 'Git', 10)
 second_student.rate_lec(second_lecturer, 'Git', 10)
 
-print(first_student.grades)
-print(second_student.grades)
-print(first_lecturer.grades)
-print(second_lecturer.grades)
+# Создание списков для функции avg_overall_rating()
+students_list = [first_student, second_student]
+lecturers_list = [first_lecturer, second_lecturer]
+
+# # Вывод
+# print(first_student.courses_in_progress)
+# print(first_student.finished_courses)
+# print(second_student.courses_in_progress)
+# print(second_student.finished_courses)
+# print(first_lecturer.courses_attached)
+# print(second_lecturer.courses_attached)
+# print(first_reviewer.courses_attached)
+# print(second_reviewer.courses_attached)
+
+# print(first_student.grades)
+# print(second_student.grades)
+# print(first_lecturer.grades)
+# print(second_lecturer.grades)
 
 print(first_student)
 print(second_student)
@@ -133,3 +173,10 @@ print(second_lecturer)
 print(first_lecturer < second_lecturer)
 print(first_lecturer < second_student)
 print(first_reviewer)
+
+print(avg_overall_rating(students_list, "Git"))
+print(avg_overall_rating(students_list, "Python"))
+print(avg_overall_rating(students_list, "Java"))
+
+print(avg_overall_rating(lecturers_list, "Git"))
+print(avg_overall_rating(lecturers_list, "Python"))
